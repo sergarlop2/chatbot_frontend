@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import ChatWindow from "./components/ChatWindow";
+import ChatInput from "./components/ChatInput";
+import { sendMessage } from "./api/chatApi";
+import type { Message } from "./types/chat";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "system",
+      content: "You are an expert assistant. Respond with a concise answer.",
+    }
+  ]);
+  const [sources, setSources] = useState<any[] | undefined>();
+
+  const handleSend = async (content: string, useRag: boolean) => {
+    const userMessage: Message = { role: "user", content };
+    const newMessages = [...messages, userMessage];
+
+    try {
+      const response = await sendMessage({
+        model: "llama-3.1-8b-instruct",
+        use_rag: useRag,
+        messages: newMessages,
+      });
+
+      setMessages([...newMessages, response.message]);
+      setSources(response.sources);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <h1>Chatbot</h1>
+      <ChatWindow messages={messages.slice(1)} sources={sources} />
+      <ChatInput onSend={handleSend} />
+    </div>
+  );
 }
 
-export default App
+export default App;
+
