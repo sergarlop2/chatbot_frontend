@@ -7,7 +7,8 @@ interface ChatMessageProps {
 export default function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div className={`message ${message.role}`}>
-      <strong>{message.role}:</strong> {message.content}
+      <strong>{message.role}:</strong>
+      <pre>{message.content}</pre>
     </div>
   );
 }
