@@ -13,10 +13,15 @@ function App() {
     }
   ]);
   const [sources, setSources] = useState<any[] | undefined>();
+  const [elapsedTime, setElapsedTime] = useState<number | undefined>();
+  const [loading, setLoading] = useState(false);
 
   const handleSend = async (content: string, useRag: boolean) => {
     const userMessage: Message = { role: "user", content };
     const newMessages = [...messages, userMessage];
+    setLoading(true);
+    setSources(undefined);
+    setElapsedTime(undefined);
 
     try {
       const response = await sendMessage({
@@ -27,15 +32,23 @@ function App() {
 
       setMessages([...newMessages, response.message]);
       setSources(response.sources);
+      setElapsedTime(response.elapsed_time);
     } catch (err) {
       console.error("Error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="app">
       <h1>Chatbot</h1>
-      <ChatWindow messages={messages.slice(1)} sources={sources} />
+      <ChatWindow 
+        messages={messages.slice(1)} 
+        sources={sources} 
+        elapsedTime={elapsedTime}
+        loading={loading} 
+      />
       <ChatInput onSend={handleSend} />
     </div>
   );

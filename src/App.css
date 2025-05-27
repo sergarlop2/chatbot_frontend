@@ -56,3 +56,15 @@
   border-radius: 5px;
 }
 
+.elapsed-time {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.loading {
+  font-style: italic;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
