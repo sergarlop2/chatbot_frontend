@@ -19,6 +19,8 @@ function App() {
   const handleSend = async (content: string, useRag: boolean) => {
     const userMessage: Message = { role: "user", content };
     const newMessages = [...messages, userMessage];
+
+    setMessages(newMessages);
     setLoading(true);
     setSources(undefined);
     setElapsedTime(undefined);

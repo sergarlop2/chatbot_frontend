@@ -1,14 +1,28 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+  --color-bg: #f0f4f8;
+  --color-surface: #ffffff;
+  --color-user-msg: #daf0ff;
+  --color-assistant-msg: #e8f5e9;
+  --color-button: #007bff;
+  --color-button-hover: #005fcc;
+  --color-button-disabled: #a3c5ff;
+  --color-text: #333;
+
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
   color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #ffffff;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
