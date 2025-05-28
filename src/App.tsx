@@ -49,7 +49,7 @@ function App() {
         elapsedTime={elapsedTime}
         loading={loading} 
       />
-      <ChatInput onSend={handleSend} />
+      <ChatInput onSend={handleSend} loading={loading} />
     </div>
   );
 }
