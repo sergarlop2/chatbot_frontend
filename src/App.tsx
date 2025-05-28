@@ -18,21 +18,28 @@ function App() {
 
   const handleSend = async (content: string, useRag: boolean) => {
     const userMessage: Message = { role: "user", content };
-    const newMessages = [...messages, userMessage];
+    const updatedMessages = [...messages, userMessage];
+    const windowSize = useRag ? 4 : 8; // smaller window if RAG is on
 
-    setMessages(newMessages);
+    setMessages(updatedMessages);
     setLoading(true);
     setSources(undefined);
     setElapsedTime(undefined);
+
+    const recentMessages = updatedMessages.slice(-windowSize);
+    const messagesToSend = [
+      messages[0], // system message
+      ...recentMessages.filter(m => m.role !== "system"),
+    ];
 
     try {
       const response = await sendMessage({
         model: "llama-3.1-8b-instruct",
         use_rag: useRag,
-        messages: newMessages,
+        messages: messagesToSend,
       });
 
-      setMessages([...newMessages, response.message]);
+      setMessages([...updatedMessages, response.message]);
       setSources(response.sources);
       setElapsedTime(response.elapsed_time);
     } catch (err) {
