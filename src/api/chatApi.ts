@@ -1,7 +1,7 @@
 import type { ChatRequest, ChatResponse } from "../types/chat";
 
 export const sendMessage = async (request: ChatRequest): Promise<ChatResponse> => {
-  const res = await fetch("http://localhost:8000/chat/completions", {
+  const res = await fetch("http://192.168.1.140:5000/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
