@@ -10,9 +10,14 @@
 }
 
 .app-header {
+  background-color: var(--color-surface);
+  padding: 1rem;
+  margin: 0 0 1rem 0;
   text-align: center;
-  margin: 1.5rem 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
+
 
 .app-title {
   font-size: 2rem;
@@ -80,6 +85,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05); 
 }
 
 .chat-input textarea {
@@ -92,6 +101,11 @@
   font-family: inherit;
   width: 100%;
   box-sizing: border-box;
+}
+
+.chat-input textarea:focus {
+  outline: none;
+  border: 1px solid var(--color-button);
 }
 
 .chat-input button {
@@ -156,16 +170,25 @@
 
 @media (max-width: 600px) {
   .app {
-    padding: 0.75rem;
+    padding: 0.5rem;
+    height: 100vh;
+  }
+
+  .app-header {
+    padding: 1rem 0.5rem;
   }
 
   .chat-window {
     padding: 0.75rem;
   }
 
-  .message {
-    font-size: 0.95rem;
-    max-width: 100%;
+  .chat-input {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    background-color: var(--color-surface);
+    padding: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .chat-input textarea {
