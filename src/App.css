@@ -6,7 +6,7 @@
   flex-direction: column;
   height: 97vh;
   background-color: var(--color-bg);
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
 }
 
 .app-header {
@@ -155,7 +155,7 @@
   position: relative;
   padding-left: 60px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
 }
 
 .switch input {
