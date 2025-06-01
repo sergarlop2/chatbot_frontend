@@ -32,14 +32,15 @@ export default function ChatInput({ onSend, loading }: ChatInputProps) {
         placeholder="Type your message..."
         disabled={loading}
       />
-      <label>
+      <label className="switch">
+        Use RAG
         <input
           type="checkbox"
           checked={useRag}
           onChange={(e) => setUseRag(e.target.checked)}
           disabled={loading}
         />
-        Use RAG
+        <span className="slider"></span>
       </label>
       <button onClick={handleSend} disabled={loading || input.trim() === ""}>
         {loading ? (
