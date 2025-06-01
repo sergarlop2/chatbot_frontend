@@ -61,7 +61,7 @@ function App() {
           DigCom: Your AI assistant for digital communications
         </h1>
         <p className="app-subtitle">
-          Ask questions about communication systems, modulations, channels, and more.
+          Ask questions about communication systems, modulations, channels, and more
         </p>
       </header>
       <ChatWindow 

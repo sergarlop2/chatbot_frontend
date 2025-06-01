@@ -45,7 +45,7 @@ export default function ChatInput({ onSend, loading }: ChatInputProps) {
       <button onClick={handleSend} disabled={loading || input.trim() === ""}>
         {loading ? (
           <>
-            <Spinner /> Sending...
+            <Spinner /> Waiting response...
           </>
         ) : (
           "Send"

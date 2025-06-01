@@ -7,7 +7,7 @@ interface SourceListProps {
 export default function SourceList({ sources }: SourceListProps) {
   return (
     <div className="sources">
-      <h4>Sources:</h4>
+      <strong>Sources</strong>
       <ul>
         {sources.map((src, idx) => (
           <li key={idx}>

@@ -221,12 +221,19 @@
 
 
 .sources {
-  font-size: 0.9rem;
   margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  max-width: 85%;
   background-color: #eef;
-  padding: 0.5rem;
-  border-radius: 8px;
-  overflow-x: auto;
+  color: #222; /* texto oscuro para buena legibilidad */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  box-shadow: var(--shadow);
+  align-self: flex-start; /* si quieres que quede alineado a la izquierda, igual que .assistant */
+  font-size: 0.9rem;
 }
 
 .elapsed-time {
