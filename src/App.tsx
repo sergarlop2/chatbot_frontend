@@ -39,7 +39,12 @@ function App() {
         messages: messagesToSend,
       });
 
-      setMessages([...updatedMessages, response.message]);
+      const cleanedMessage = {
+        ...response.message,
+        content: response.message.content.replace(/^\n+/, ""),
+      };
+
+      setMessages([...updatedMessages, cleanedMessage]);
       setSources(response.sources);
       setElapsedTime(response.elapsed_time);
     } catch (err) {
