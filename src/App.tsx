@@ -56,7 +56,14 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Chatbot</h1>
+      <header className="app-header">
+        <h1 className="app-title">
+          DigCom: Your AI assistant for digital communications
+        </h1>
+        <p className="app-subtitle">
+          Ask questions about communication systems, modulations, channels, and more.
+        </p>
+      </header>
       <ChatWindow 
         messages={messages.slice(1)} 
         sources={sources} 
