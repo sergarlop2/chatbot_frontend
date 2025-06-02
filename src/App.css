@@ -305,6 +305,8 @@
     flex-shrink: 0;
     font-size: 0.95rem; 
     flex-shrink: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
   .chat-window {
