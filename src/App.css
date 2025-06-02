@@ -249,7 +249,7 @@
   padding: 0.75rem 1rem;
   border-radius: var(--radius);
   max-width: 85%;
-  background-color: var(--color-surface);
+  background-color: var(--color-sources-msg);
   color: var(--color-text); 
   overflow-wrap: break-word;
   word-break: break-word;
