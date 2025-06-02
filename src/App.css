@@ -233,7 +233,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-.switch input:disabled + .slider {
+.switch input:checked:disabled + .slider {
   background-color: var(--color-button-disabled);
   cursor: not-allowed;
   box-shadow: none;
@@ -243,12 +243,6 @@
   background-color: var(--color-surface);
   box-shadow: none;
 }
-
-.switch:hover input:not(:disabled) + .slider {
-  background-color: var(--color-button-hover);
-  box-shadow: inset 0 0 10px var(--color-button-hover);
-}
-
 
 .sources {
   margin-top: 1rem;
