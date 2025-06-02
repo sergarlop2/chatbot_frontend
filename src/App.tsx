@@ -58,10 +58,10 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1 className="app-title">
-          DigCom: Your AI assistant for digital communications
+          DigCom
         </h1>
         <p className="app-subtitle">
-          Ask questions about communication systems, modulations, channels, and more
+          Your AI assistant for digital communications
         </p>
       </header>
       <ChatWindow 

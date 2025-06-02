@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import SourceList from "./SourceList";
 import type { Message, Source } from "../types/chat";
@@ -10,6 +11,12 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({ messages, sources, elapsedTime, loading }: ChatWindowProps) {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+   useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
   return (
     <div className="chat-window">
       {messages.map((msg, i) => (
@@ -20,6 +27,7 @@ export default function ChatWindow({ messages, sources, elapsedTime, loading }: 
         <div className="elapsed-time">⏱️ Response time: {elapsedTime.toFixed(2)} s</div>
       )}
       {sources && <SourceList sources={sources} />}
+      <div ref={bottomRef} />
     </div>
   );
 }
