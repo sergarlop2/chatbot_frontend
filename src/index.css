@@ -8,9 +8,18 @@
   --color-user-msg: #daf0ff;
   --color-assistant-msg: #e8f5e9;
   --color-button: #007bff;
+  --color-button-text: #ffffff;
   --color-button-hover: #005fcc;
   --color-button-disabled: #a3c5ff;
   --color-text: #2d2d2d;
+  --color-title: #2c3e50;
+  --color-subtitle: #7f8c8d;
+  --color-textarea-border: #ccc;
+  --color-slider-bg: #e0e0e0;
+  --color-elapsed-text: #667;
+  --color-loading-text: #888;
+  --color-spinner-border: #f3f3f3;
+  --color-spinner-border-top: #555;
 
   --radius: 12px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
