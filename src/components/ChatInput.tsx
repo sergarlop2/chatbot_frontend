@@ -43,7 +43,7 @@ export default function ChatInput({ onSend, loading }: ChatInputProps) {
             />
             <span className="slider"></span>
           </label>
-          <span>Use RAG</span>
+          <span><strong>Enable RAG</strong></span>
         </div>
         <button onClick={handleSend} disabled={loading || input.trim() === ""}>
           {loading ? (

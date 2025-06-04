@@ -58,7 +58,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1 className="app-title">
-          DigCom
+          Fading.AI
         </h1>
         <p className="app-subtitle">
           Your AI assistant for digital communications
