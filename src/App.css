@@ -43,11 +43,11 @@
 }
 
 .menu-items-container {
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem;
   width: 14rem;
   border: 1.5px solid var(--color-textarea-border);
   border-radius: var(--radius);
-  background-color: var(--color-bg);
+  background-color: var(--color-surface);
   box-shadow: var(--shadow);
   display: inline-block; 
 }
@@ -92,6 +92,80 @@
   background: none; 
   text-align: left;
 }
+
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-textarea-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  max-width: 90%;
+  width: 20rem;
+  text-align: center;
+}
+
+.popup p {
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.confirm-button,
+.cancel-button {
+  padding: 0.75rem 1.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  color: var(--color-button-text);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.confirm-button {
+  background-color: var(--color-button);
+}
+
+.confirm-button:hover {
+  background-color: var(--color-button-hover);
+}
+
+.cancel-button {
+  background-color: var(--color-button-disabled);
+  color: var(--color-text);
+}
+
+.cancel-button:hover {
+  background-color: var(--color-textarea-border);
+}
+
 
 .menu-dropdown li:hover,
 .menu-dropdown li:focus {

@@ -6,6 +6,7 @@ type HeaderProps = {
 
 function Header({ onClearHistory }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -18,6 +19,14 @@ function Header({ onClearHistory }: HeaderProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleClearHistory = () => {
+    const confirmed = window.confirm("Are you sure you want to clear the chat history?");
+    if (confirmed) {
+      onClearHistory();
+      setMenuOpen(false);
+    }
+  };
 
   return (
     <header className="app-header header-with-menu">
@@ -33,9 +42,10 @@ function Header({ onClearHistory }: HeaderProps) {
                     tabIndex={0}
                     role="menuitem"
                     onClick={() => {
-                    onClearHistory();
-                    setMenuOpen(false);
-                    }}
+                      setShowConfirm(true);
+                      setMenuOpen(false);
+                  }}
+
                 >
                     🧹 Clean chat history
                 </li>
@@ -47,6 +57,27 @@ function Header({ onClearHistory }: HeaderProps) {
           </nav> 
         )}
       </div>
+
+      {showConfirm && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p>
+                Are you sure you want to clear the chat history? This action cannot be undone
+            </p>
+            <div className="popup-buttons">
+              <button className="confirm-button" onClick={() => {
+                onClearHistory();
+                setShowConfirm(false);
+              }}>
+                Yes
+              </button>
+              <button className="cancel-button" onClick={() => setShowConfirm(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <h1 className="app-title">Fading.AI</h1>
       <p className="app-subtitle">
