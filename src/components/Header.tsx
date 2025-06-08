@@ -27,19 +27,23 @@ function Header({ onClearHistory }: HeaderProps) {
         </button>
         {menuOpen && (
           <nav className="menu-dropdown" role="menu" aria-label="Main menu">
-            <ul>
-              <li
-                tabIndex={0}
-                role="menuitem"
-                onClick={() => {
-                  onClearHistory();
-                  setMenuOpen(false);
-                }}
-              >
-                🗑 Clean chat history
-              </li>
-              {/* Puedes añadir más <li> con opciones aquí */}
-            </ul>
+            <div className="menu-items-container">
+              <ul>
+                <li
+                    tabIndex={0}
+                    role="menuitem"
+                    onClick={() => {
+                    onClearHistory();
+                    setMenuOpen(false);
+                    }}
+                >
+                    🧹 Clean chat history
+                </li>
+                <li>
+                    ✏️ Change system prompt
+                </li>
+             </ul>
+            </div>
           </nav> 
         )}
       </div>
