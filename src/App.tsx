@@ -1,6 +1,7 @@
 import { useState, useEffect, } from "react";
 import ChatWindow from "./components/ChatWindow";
 import ChatInput from "./components/ChatInput";
+import Header from "./components/Header";
 import { sendMessage } from "./api/chatApi";
 import type { Message } from "./types/chat";
 import "./App.css";
@@ -72,16 +73,21 @@ function App() {
     }
   };
 
+  const handleClearHistory = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    setMessages([
+      {
+        role: "system",
+        content: "You are an expert assistant. Respond with a concise answer.",
+      },
+    ]);
+    setSources(undefined);
+    setElapsedTime(undefined);
+  };
+
   return (
     <div className="app">
-      <header className="app-header">
-        <h1 className="app-title">
-          Fading.AI
-        </h1>
-        <p className="app-subtitle">
-          Your AI assistant for digital communications
-        </p>
-      </header>
+      <Header onClearHistory={handleClearHistory} />
       <ChatWindow 
         messages={messages.slice(1)} 
         sources={sources} 
