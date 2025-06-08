@@ -20,14 +20,6 @@ function Header({ onClearHistory }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleClearHistory = () => {
-    const confirmed = window.confirm("Are you sure you want to clear the chat history?");
-    if (confirmed) {
-      onClearHistory();
-      setMenuOpen(false);
-    }
-  };
-
   return (
     <header className="app-header header-with-menu">
       <div className="menu-container" ref={menuRef}>
