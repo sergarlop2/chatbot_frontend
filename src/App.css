@@ -129,6 +129,30 @@
   gap: 1rem;
 }
 
+.popup textarea {
+  flex: 1 1 100%;
+  resize: vertical;
+  min-height: 6.25rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1.25px solid var(--color-textarea-border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  line-height: 1.5;
+  min-width: 0;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.popup textarea:focus {
+  outline: none;
+  border: 1px solid var(--color-button);
+}
+
 .confirm-button,
 .cancel-button {
   padding: 0.75rem 1.8rem;
