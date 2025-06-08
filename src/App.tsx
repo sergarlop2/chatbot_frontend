@@ -1,20 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect, } from "react";
 import ChatWindow from "./components/ChatWindow";
 import ChatInput from "./components/ChatInput";
 import { sendMessage } from "./api/chatApi";
 import type { Message } from "./types/chat";
 import "./App.css";
 
+const LOCAL_STORAGE_KEY = "chat_messages";
+
 function App() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "system",
-      content: "You are an expert assistant. Respond with a concise answer.",
+
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved_messages = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (saved_messages) {
+      try {
+        return JSON.parse(saved_messages); 
+      } catch (e) {
+        console.error("Failed to parse saved messages:", e); 
+      }
     }
-  ]);
+    return [
+      {
+        role: "system",
+        content: "You are an expert assistant. Respond with a concise answer.",
+      },
+    ];
+  });
+
   const [sources, setSources] = useState<any[] | undefined>();
   const [elapsedTime, setElapsedTime] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
 
   const handleSend = async (content: string, useRag: boolean) => {
     const userMessage: Message = { role: "user", content };
