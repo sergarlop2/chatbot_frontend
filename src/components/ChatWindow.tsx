@@ -13,6 +13,7 @@ interface ChatWindowProps {
 export default function ChatWindow({ messages, sources, elapsedTime, loading }: ChatWindowProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to the bottom whenever messages or loading state changes
    useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);

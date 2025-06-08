@@ -2,13 +2,18 @@ import { useState, useRef, useEffect } from "react";
 
 type HeaderProps = {
   onClearHistory: () => void;
+  systemPrompt: string;
+  setSystemPrompt: (prompt: string) => void;
 };
 
-function Header({ onClearHistory }: HeaderProps) {
+function Header({ onClearHistory, systemPrompt, setSystemPrompt }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showEditPrompt, setShowEditPrompt] = useState(false);
+  const [newPrompt, setNewPrompt] = useState(systemPrompt);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
+  // Handle click outside to close menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -19,6 +24,11 @@ function Header({ onClearHistory }: HeaderProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // When the system prompt changes, update the prompt in the popup
+  useEffect(() => {
+    setNewPrompt(systemPrompt);
+  }, [systemPrompt]);
 
   return (
     <header className="app-header header-with-menu">
@@ -41,8 +51,15 @@ function Header({ onClearHistory }: HeaderProps) {
                 >
                     🧹 Clean chat history
                 </li>
-                <li>
-                    ✏️ Change system prompt
+                <li
+                    tabIndex={0}
+                    role="menuitem"
+                    onClick={() => {
+                    setShowEditPrompt(true);
+                    setMenuOpen(false);
+                  }}
+                >
+                    ✏️ Edit system prompt
                 </li>
              </ul>
             </div>
@@ -64,6 +81,35 @@ function Header({ onClearHistory }: HeaderProps) {
                 Yes
               </button>
               <button className="cancel-button" onClick={() => setShowConfirm(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showEditPrompt && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p>Edit the system prompt:</p>
+            <textarea
+              value={newPrompt}
+              onChange={(e) => setNewPrompt(e.target.value)}
+              rows={5}
+              style={{ width: "100%" }}
+            />
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => {
+                  // Use default prompt if user provides an empty text
+                  setSystemPrompt(newPrompt.trim() || "You are an expert assistant. Respond with a concise answer.");
+                  setShowEditPrompt(false);
+                }}
+              >
+                Save
+              </button>
+              <button className="cancel-button" onClick={() => setShowEditPrompt(false)}>
                 Cancel
               </button>
             </div>

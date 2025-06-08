@@ -6,12 +6,27 @@ import { sendMessage } from "./api/chatApi";
 import type { Message } from "./types/chat";
 import "./App.css";
 
-const LOCAL_STORAGE_KEY = "chat_messages";
+const STORAGE_MESSAGES_KEY = "chat_messages";
+const STORAGE_PROMPT_KEY = "system_prompt";
 
 function App() {
 
+  // Read system prompt from localStorage or use default
+  const [systemPrompt, setSystemPrompt] = useState(() => {
+    return (
+      localStorage.getItem(STORAGE_PROMPT_KEY) ||
+      "You are an expert assistant. Respond with a concise answer."
+    );
+  });
+
+  // Save system prompt to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_PROMPT_KEY, systemPrompt);
+  }, [systemPrompt]);
+
+  // Obtain messages from localStorage or initialize with system prompt
   const [messages, setMessages] = useState<Message[]>(() => {
-    const saved_messages = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const saved_messages = localStorage.getItem(STORAGE_MESSAGES_KEY);
     if (saved_messages) {
       try {
         return JSON.parse(saved_messages); 
@@ -19,20 +34,26 @@ function App() {
         console.error("Failed to parse saved messages:", e); 
       }
     }
-    return [
-      {
-        role: "system",
-        content: "You are an expert assistant. Respond with a concise answer.",
-      },
-    ];
+    return [{ role: "system", content: systemPrompt }];
   });
+
+  // Update first message if system prompt changes
+  useEffect(() => {
+    setMessages((msgs) => {
+      if (msgs.length === 1 && msgs[0].role === "system") {
+        return [{ role: "system", content: systemPrompt }];
+      }
+      return msgs;
+    });
+  }, [systemPrompt]);
 
   const [sources, setSources] = useState<any[] | undefined>();
   const [elapsedTime, setElapsedTime] = useState<number | undefined>();
   const [loading, setLoading] = useState(false);
 
+  // Save messages to localStorage 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
+    localStorage.setItem(STORAGE_MESSAGES_KEY, JSON.stringify(messages));
   }, [messages]);
 
   const handleSend = async (content: string, useRag: boolean) => {
@@ -74,20 +95,15 @@ function App() {
   };
 
   const handleClearHistory = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    setMessages([
-      {
-        role: "system",
-        content: "You are an expert assistant. Respond with a concise answer.",
-      },
-    ]);
+    localStorage.removeItem(STORAGE_MESSAGES_KEY);
+    setMessages([{ role: "system", content: systemPrompt }]);
     setSources(undefined);
     setElapsedTime(undefined);
   };
 
   return (
     <div className="app">
-      <Header onClearHistory={handleClearHistory} />
+      <Header onClearHistory={handleClearHistory} systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} />
       <ChatWindow 
         messages={messages.slice(1)} 
         sources={sources} 

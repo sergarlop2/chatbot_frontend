@@ -16,6 +16,7 @@ export default function ChatInput({ onSend, loading }: ChatInputProps) {
     setInput("");
   };
 
+  // Handle Enter key to send message, Shift+Enter for new line
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
