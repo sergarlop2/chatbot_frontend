@@ -212,6 +212,48 @@
   margin-bottom: 1rem;
 }
 
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px; 
+  overflow-y: auto;  
+  border-radius: 6px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.delete-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #c00;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.delete-button:hover:not(:disabled) {
+  color: #f33;
+}
+
+.delete-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .menu-dropdown li:hover,
 .menu-dropdown li:focus {
   color: var(--color-button-hover); 

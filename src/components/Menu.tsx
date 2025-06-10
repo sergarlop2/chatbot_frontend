@@ -23,8 +23,56 @@ export default function Menu({
   const [showUploadSuccess, setShowUploadSuccess] = useState(false);
   const [showUploadError, setShowUploadError] = useState(false);
   const [uploadErrorMessage, setUploadErrorMessage] = useState("");
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
+  const [showDeleteError, setShowDeleteError] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+  const [showFileManager, setShowFileManager] = useState(false);
+  const [fileList, setFileList] = useState<string[]>([]);
+  const [loadingFiles, setLoadingFiles] = useState(false);
+  const [deletingFile, setDeletingFile] = useState<string | null>(null);
+
+  const fetchFileList = async () => {
+    setLoadingFiles(true);
+    try {
+      const res = await fetch(`${API_URL}/docs`);
+      const data = await res.json();
+
+      if (Array.isArray(data.docs)) {
+        setFileList(data.docs);
+      } else {
+        console.error("Unexpected response format:", data);
+        setFileList([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch file list:", err);
+      setFileList([]);
+    } finally {
+      setLoadingFiles(false);
+    }
+  };
+
+  const deleteFile = async (filename: string) => {
+    setDeletingFile(filename);
+    try {
+      const res = await fetch(`${API_URL}/docs/${filename}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete file");
+
+      setFileList((prev) => prev.filter((f) => f !== filename));
+      setShowDeleteSuccess(true);
+    } catch (err: any) {
+      console.error("Delete error:", err);
+      setDeleteErrorMessage(err.message || "Error deleting file.");
+      setShowDeleteError(true);
+    } finally {
+      setDeletingFile(null);
+    }
+  };
 
   // Handle click outside to close menu
   useEffect(() => {
@@ -82,6 +130,17 @@ export default function Menu({
                 }}
               >
                 📄 Upload PDF to RAG
+              </li>
+              <li
+                tabIndex={0}
+                role="menuitem"
+                onClick={() => {
+                  setShowFileManager(true);
+                  setMenuOpen(false);
+                  fetchFileList();
+                }}
+              >
+                🗂️ Manage RAG files
               </li>
             </ul>
           </div>
@@ -249,6 +308,97 @@ export default function Menu({
               <button
                 className="confirm-button"
                 onClick={() => setShowUploadError(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFileManager && !showDeleteSuccess && !showDeleteError && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <h3>Uploaded files in RAG system</h3>
+
+            {loadingFiles ? (
+              <>
+                <Spinner />
+                <br /><br />
+              </>
+            ) : fileList.length === 0 ? (
+              <p>No files uploaded</p>
+            ) : (
+              <>
+                <ul className="file-list">
+                  {fileList.map((filename) => (
+                    <li key={filename} className="file-item">
+                      <a
+                        href={`${API_URL}/docs/${encodeURIComponent(filename)}`}
+                        download
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {filename}
+                      </a>
+                      <button
+                        className="delete-button"
+                        onClick={() => deleteFile(filename)}
+                        disabled={deletingFile === filename}
+                      >
+                        {deletingFile === filename ? (
+                          <>
+                            <Spinner />
+                            <br /><br />
+                          </>
+                        ) : (
+                          "❌"
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <br/>
+              </>
+            )}
+
+            <div className="popup-buttons">
+              <button
+                className="cancel-button"
+                onClick={() => setShowFileManager(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteSuccess && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p><strong>✅ File deleted successfully</strong></p>
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => setShowDeleteSuccess(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteError && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p><strong>❌ Failed to delete file</strong></p>
+            <p>{deleteErrorMessage}</p>
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => setShowDeleteError(false)}
               >
                 Close
               </button>
