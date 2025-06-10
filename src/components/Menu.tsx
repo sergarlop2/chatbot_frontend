@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import Spinner from "./Spinner";
 
 type MenuProps = {
   onClearHistory: () => void;
@@ -16,6 +17,14 @@ export default function Menu({
   const [showEditPrompt, setShowEditPrompt] = useState(false);
   const [newPrompt, setNewPrompt] = useState(systemPrompt);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [showUploadSuccess, setShowUploadSuccess] = useState(false);
+  const [showUploadError, setShowUploadError] = useState(false);
+  const [uploadErrorMessage, setUploadErrorMessage] = useState("");
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // Handle click outside to close menu
   useEffect(() => {
@@ -64,6 +73,16 @@ export default function Menu({
               >
                 ✏️ Edit system prompt
               </li>
+              <li
+                tabIndex={0}
+                role="menuitem"
+                onClick={() => {
+                  setShowUpload(true);
+                  setMenuOpen(false);
+                }}
+              >
+                📄 Upload PDF to RAG
+              </li>
             </ul>
           </div>
         </nav>
@@ -73,7 +92,9 @@ export default function Menu({
         <div className="popup-backdrop">
           <div className="popup">
             <p>
-              Are you sure you want to clear the chat history? This action cannot be undone
+              <strong>
+                Are you sure you want to clear the chat history? This action cannot be undone
+              </strong>
             </p>
             <div className="popup-buttons">
               <button
@@ -96,12 +117,11 @@ export default function Menu({
       {showEditPrompt && (
         <div className="popup-backdrop">
           <div className="popup">
-            <p>Edit the system prompt:</p>
+            <p><strong>Edit the system prompt:</strong></p>
             <textarea
               value={newPrompt}
               onChange={(e) => setNewPrompt(e.target.value)}
               rows={5}
-              style={{ width: "100%" }}
             />
             <div className="popup-buttons">
               <button
@@ -121,6 +141,122 @@ export default function Menu({
           </div>
         </div>
       )}
+
+      {showUpload && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p><strong>Upload PDF file to the RAG system:</strong></p>
+
+            <div className="file-upload-section">
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  setSelectedFile(file);
+                }}
+              />
+            </div>
+
+            {selectedFile && (
+              <p>
+                Selected file: {selectedFile.name}
+              </p>
+            )}
+
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                disabled={!selectedFile || uploading}
+                onClick={async () => {
+                  if (!selectedFile) return;
+
+                  const formData = new FormData();
+                  formData.append("file", selectedFile);
+                  setUploading(true);
+
+                  try {
+                    const response = await fetch(`${API_URL}/docs`, {
+                      method: "PUT",
+                      body: formData,
+                    });
+
+                    if (!response.ok) {
+                      const err = await response.json();
+                      throw new Error(err.detail || "Upload failed");
+                    }
+
+                    setShowUpload(false);
+                    setSelectedFile(null);
+                    setShowUploadSuccess(true);
+                  } catch (error: any) {
+                    console.error("Upload failed:", error);
+                    setUploadErrorMessage(error.message || "Unexpected error during upload");
+                    setShowUploadError(true);
+                  } finally {
+                    setUploading(false);
+                  }
+                }}
+              >
+                {uploading ? (
+                  <>
+                    <Spinner /> Uploading...
+                  </>
+                ) : (
+                  "Upload"
+                )}
+              </button>
+
+              <button
+                className="cancel-button"
+                disabled={uploading}
+                onClick={() => {
+                  setShowUpload(false);
+                  setSelectedFile(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUploadSuccess && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p><strong>✅ PDF uploaded and vectorized successfully</strong></p>
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => setShowUploadSuccess(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUploadError && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p><strong>❌ Upload failed</strong></p>
+            <p>
+              {uploadErrorMessage}
+            </p>
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => setShowUploadError(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

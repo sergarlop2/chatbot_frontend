@@ -181,6 +181,15 @@
   background-color: var(--color-button-hover);
 }
 
+.confirm-button:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background-color: var(--color-button-hover);
+}
+
 .cancel-button {
   background-color: var(--color-button-disabled);
   color: var(--color-text);
@@ -190,6 +199,18 @@
   background-color: var(--color-textarea-border);
 }
 
+.cancel-button:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background-color: var(--color-textarea-border);
+}
+
+.file-upload-section {
+  margin-bottom: 1rem;
+}
 
 .menu-dropdown li:hover,
 .menu-dropdown li:focus {
