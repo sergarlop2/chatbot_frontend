@@ -21,6 +21,8 @@
   --color-loading-text: #636366;
   --color-spinner-border: #1e2a38;
   --color-spinner-border-top: #00a5bb;
+  --color-input-file-bg: rgba(0, 165, 187, 0.15); 
+  --color-input-file-disabled: rgba(100, 100, 105, 0.2);
 
   --radius: 16px; 
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.6); 

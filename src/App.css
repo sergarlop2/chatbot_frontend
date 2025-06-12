@@ -212,6 +212,36 @@
   margin-bottom: 1rem;
 }
 
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-button-text);
+  background-color: var(--color-input-file-bg);
+  border: 2px dashed var(--color-button-hover);
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.custom-file-upload:hover,
+.custom-file-upload:focus {
+  color: var(--color-button-hover);
+}
+
+input:disabled + .custom-file-upload {
+  background-color: var(--color-input-file-disabled);
+  color: var(--color-button-text);
+  cursor: not-allowed;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
 .file-list {
   list-style: none;
   padding: 0;

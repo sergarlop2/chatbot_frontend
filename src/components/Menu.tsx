@@ -207,16 +207,21 @@ export default function Menu({
         <div className="popup-backdrop">
           <div className="popup">
             <p><strong>Upload PDF file to the RAG system:</strong></p>
-
             <div className="file-upload-section">
               <input
+                id="pdf-upload"
                 type="file"
                 accept=".pdf"
+                hidden
+                disabled={uploading}
                 onChange={(e) => {
                   const file = e.target.files?.[0] || null;
                   setSelectedFile(file);
                 }}
               />
+              <label htmlFor="pdf-upload" className="custom-file-upload">
+                📄 Select PDF file
+              </label>
             </div>
 
             {selectedFile && (
