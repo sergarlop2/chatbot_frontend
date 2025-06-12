@@ -26,6 +26,8 @@ export default function Menu({
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
   const [showDeleteError, setShowDeleteError] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -343,7 +345,10 @@ export default function Menu({
                       </a>
                       <button
                         className="delete-button"
-                        onClick={() => deleteFile(filename)}
+                        onClick={() => {
+                          setFileToDelete(filename);
+                          setShowDeleteConfirm(true);
+                        }}
                         disabled={deletingFile === filename}
                       >
                         {deletingFile === filename ? (
@@ -368,6 +373,44 @@ export default function Menu({
                 onClick={() => setShowFileManager(false)}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteConfirm && fileToDelete && (
+        <div className="popup-backdrop">
+          <div className="popup">
+            <p>
+              <strong>
+                Are you sure you want to delete the selected file from the RAG system? This action cannot be undone
+              </strong>
+            </p>
+            {fileToDelete && (
+              <p>
+                Selected file: {fileToDelete}
+              </p>
+            )}
+            <div className="popup-buttons">
+              <button
+                className="confirm-button"
+                onClick={() => {
+                  deleteFile(fileToDelete);
+                  setShowDeleteConfirm(false);
+                  setFileToDelete(null);
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="cancel-button"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setFileToDelete(null);
+                }}
+              >
+                Cancel
               </button>
             </div>
           </div>
