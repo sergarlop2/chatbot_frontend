@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { DEFAULT_SYSTEM_PROMPT } from "../types/chat";
 import Spinner from "./Spinner";
 
 type MenuProps = {
@@ -189,7 +190,7 @@ export default function Menu({
                 className="confirm-button"
                 onClick={() => {
                   // Use default prompt if user provides an empty text
-                  setSystemPrompt(newPrompt.trim() || "You are an expert assistant. Respond with a concise answer.");
+                  setSystemPrompt(newPrompt.trim() || DEFAULT_SYSTEM_PROMPT);
                   setShowEditPrompt(false);
                 }}
               >
